@@ -73,6 +73,12 @@
       margin-top: 12px;
     }
 
+    :fullscreen #player,
+:-webkit-full-screen #player {
+  width: 100%;
+  height: 100vh !important;
+}
+
 
     @media (max-width:768px){
       .player-frame { height: 640px; }
@@ -388,6 +394,8 @@
       refreshMeta();
       const id = videos[currentIndex].id;
       player.loadVideoById(id);
+
+
       const url = new URL(window.location.href);
       url.searchParams.set('video', id);
       history.replaceState({}, '', url.toString());
@@ -400,7 +408,7 @@
     });
 
     window.addEventListener('blur', () => {
-      document.getElementById('player').style.filter = 'blur(10px)';
+      document.getElementById('player').style.filter = 'blur(15px)';
     });
     window.addEventListener('focus', () => {
       document.getElementById('player').style.filter = 'none';
@@ -475,9 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-
-
     window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
   </script>
 </body>
