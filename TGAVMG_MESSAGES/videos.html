@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TGAVMG_MESSAGES Videos</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <link href="img/logo.png" rel="icon">
+    <style>
+        /* small custom styles that keep original look */
+        .tm-paging-link { margin: 0 6px; padding: 6px 16px; border-radius: 4px; text-decoration: none; color: #333; background: #f2f2f2; font-weight: 500; }
+        .tm-paging-link.active { background: #007bff; color: #fff; }
+        .tm-btn-prev.disabled, .tm-btn-next.disabled { pointer-events: none; opacity: 0.5; }
+        .tm-search-form { max-width: 400px; margin: 0 auto; }
+        .video-card { transition: transform .15s ease, box-shadow .15s ease; border: none; }
+        .video-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .video-thumb { width:100%; height:180px; object-fit:cover; border-radius:6px; display:block; }
+        @media (max-width:576px) { .video-thumb { height:140px; } }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-family: Ramabhadra;">
+                <img src="img/logo.png" class="logo" style="height:65px; width:65px;">
+                TGAVMG_MESSAGES
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-2 active" aria-current="page" href="videos.html"><i class="fas fa-film mr-2"></i>Videos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-3" href="https://tgaversequote.vercel.app/about.html"><i class="fas fa-person mr-2"></i>About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-4" href="https://tgavmg.vercel.app/contact.html">Contact</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Search Section -->
+    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="img/hero.jpg" style="background-image:url('img/hero.jpg');">
+        <form class="d-flex tm-search-form" id="searchForm" onsubmit="return handleSearch(event)">
+            <input class="form-control tm-search-input" id="searchInput" type="search" placeholder="Meeting name or date" aria-label="Search">
+            <button class="btn btn-outline-success tm-search-btn" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    <!-- Main Content and Pagination -->
+    <div class="container-fluid tm-container-content tm-mt-60">
+        <div class="row mb-4">
+            <h2 class="col-6 tm-text-primary" style="font-family: Sree Krushnadevaraya;">
+                ఎఫెసీ గ్రంధం యొక్క వివరణ
+            </h2>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <form action="" class="tm-text-primary">
+                    Page <input type="text" id="manualPage" value="1" size="1" class="tm-input-paging tm-text-primary" readonly> 
+                    of <span id="totalPagesSpan">1</span>
+                </form>
+            </div>
+        </div>
+
+        <div class="row tm-mb-90 tm-gallery" id="videoGallery">
+            <!-- Video cards will be injected here -->
+        </div>
+
+        <div class="row tm-mb-90">
+            <div class="col-12 d-flex justify-content-between align-items-center tm-paging-col">
+                <a href="javascript:void(0);" id="btnPrev" class="btn btn-primary tm-btn-prev mb-2 disabled">Previous</a>
+                <div class="tm-paging d-flex" id="pagingLinks"></div>
+                <a href="javascript:void(0);" id="btnNext" class="btn btn-primary tm-btn-next">Next Page</a>
+            </div>
+        </div>
+    </div>
+
+       <!-- Footer -->
+    <div class="tm-bg-gray pt-5 pb-3 tm-text-gray">
+        <div class="container-fluid tm-container-small">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4">True Gospel Assembly Vemagiri</h3>
+                    <p> (TGAVMG) is a Bible-based church dedicated to spreading the Word of God and nurturing spiritual growth through worship, fellowship, and service. We believe in the full Gospel message and seek to live out Christ’s teachings in our daily lives.</p>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4">Our Links</h3>
+                    <ul class="tm-footer-links pl-0">
+                        <li><a href="https://tgavmg.vercel.app/">Website</a></li>
+                        <li><a href="https://tgaversequote.vercel.app/index.html">Bible/Qoute</a></li>
+                        <li><a href="https://tgaversequote.vercel.app/about.html">About</a></li>
+                        <li><a href="https://tgavmg.vercel.app/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <ul class="tm-social-links d-flex justify-content-end pl-0 mb-5">
+                        <li class="mb-2"><a href="https://facebook.com"><i class="fab fa-facebook"></i></a></li>
+                        <li class="mb-2"><a href="https://twitter.com"><i class="fab fa-twitter"></i></a></li>
+                        <li class="mb-2"><a href="https://instagram.com"><i class="fab fa-instagram"></i></a></li>
+                        <li class="mb-2"><a href="https://pinterest.com"><i class="fab fa-pinterest"></i></a></li>
+                    </ul>
+                    <a href="#" class="tm-text-gray text-right d-block mb-2">Terms of Use</a>
+                    <a href="#" class="tm-text-gray text-right d-block">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
+                    ©2025 TRUE GOSPEL ASSEMBLY VEMAGIRI — All Rights Reserved.
+                </div>
+                <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
+                    Designed by <a href="#" class="tm-text-gray" rel="sponsored" target="_parent">Bannu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/plugins.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    // Your provided videos array (I used exactly what you gave)
+    const videos = [
+        { id: 'ql19jsAG4XY', name: 'Saturday Meeting', date: '07 Sep 2024', views: '10,460 views', detail: 'video-detail.html?video=ql19jsAG4XY' },
+        { id: 'zL5e6fFaME8', name: 'Saturday Meeting', date: '21 Sep 2024', views: '10,460 views', detail: 'video-detail.html?video=zL5e6fFaME8' },
+        { id: 'nZfuy4Cg330', name: 'Saturday Meeting', date: '05 Oct 2024', views: '10,460 views', detail: 'video-detail.html?video=nZfuy4Cg330' },
+        { id: '50MwE3Ek5uo', name: 'Saturday Meeting', date: '19 Oct 2024', views: '10,460 views', detail: 'video-detail.html?video=50MwE3Ek5uo' },
+        { id: 'ZRDSmpnp8PA', name: 'Saturday Meeting', date: '26 Oct 2024', views: '10,460 views', detail: 'video-detail.html?video=ZRDSmpnp8PA' },
+        { id: 'og8uFRmFzcc', name: 'Saturday Meeting', date: '02 Nov 2024', views: '10,460 views', detail: 'video-detail.html?video=og8uFRmFzcc' },
+        { id: 'BfqUggTX_5w', name: 'Saturday Meeting', date: '16 Nov 2024', views: '10,460 views', detail: 'video-detail.html?video=BfqUggTX_5w' },
+        { id: 'SKnIY_FxVnQ', name: 'Saturday Meeting', date: '23 Nov 2024', views: '10,460 views', detail: 'video-detail.html?video=SKnIY_FxVnQ' },
+        { id: 'Tf7o-ELOBs8', name: 'Saturday Meeting', date: '30 Nov 2024', views: '10,460 views', detail: 'video-detail.html?video=Tf7o-ELOBs8' },
+        { id: '8VzjDGMCPgw', name: 'Saturday Meeting', date: '21 Dec 2024', views: '10,460 views', detail: 'video-detail.html?video=8VzjDGMCPgw' },
+        { id: 'Y46pCxayYCc', name: 'Saturday Meeting', date: '22 Mar 2025', views: '10,460 views', detail: 'video-detail.html?video=Y46pCxayYCc' },
+        { id: '3AOlnEgTMsQ', name: 'Saturday Meeting', date: '05 Apr 2025', views: '10,460 views', detail: 'video-detail.html?video=3AOlnEgTMsQ' },
+        { id: 'uJR0DZn7Efg', name: 'Saturday Meeting', date: '26 Apr 2025', views: '10,460 views', detail: 'video-detail.html?video=uJR0DZn7Efg' },
+        { id: 'enVGils5Yt4', name: 'Saturday Meeting', date: '24 May 2025', views: '10,460 views', detail: 'video-detail.html?video=enVGils5Yt4' },
+        { id: 'E2mDSOzl00Q', name: 'Saturday Meeting', date: '31 May 2025', views: '10,460 views', detail: 'video-detail.html?video=E2mDSOzl00Q' },
+        { id: 'WRHmz30XfPI', name: 'Saturday Meeting', date: '07 Jun 2025', views: '10,460 views', detail: 'video-detail.html?video=WRHmz30XfPI' },
+        { id: '26Ga0cukl0I', name: 'Saturday Meeting', date: '21 Jun 2025', views: '10,460 views', detail: 'video-detail.html?video=26Ga0cukl0I' },
+        { id: 'SMDv6mvO7fU', name: 'Saturday Meeting', date: '28 Jun 2025', views: '10,460 views', detail: 'video-detail.html?video=SMDv6mvO7fU' },
+        { id: 'WVFH-WliLxw', name: 'Saturday Meeting', date: '05 Jul 2025', views: '10,460 views', detail: 'video-detail.html?video=WVFH-WliLxw' }
+    ];
+
+    const videosPerPage = 8;
+    let currentPage = 1;
+    let filtered = [...videos];
+
+    // DOM nodes
+    const videoGallery = document.getElementById('videoGallery');
+    const pagingLinks = document.getElementById('pagingLinks');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const manualPage = document.getElementById('manualPage');
+    const totalPagesSpan = document.getElementById('totalPagesSpan');
+
+    function renderVideos(page = 1) {
+        videoGallery.innerHTML = '';
+        const start = (page - 1) * videosPerPage;
+        const end = Math.min(start + videosPerPage, filtered.length);
+
+        if (filtered.length === 0) {
+            videoGallery.innerHTML = '<div class="col-12"><div class="alert alert-warning">No videos found.</div></div>';
+        } else {
+            for (let i = start; i < end; i++) {
+                const v = filtered[i];
+                // use youtube thumbnail
+                const thumb = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
+                // create card
+                const col = document.createElement('div');
+                col.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5';
+                // link goes to detail page (no playback here)
+                col.innerHTML = `
+                    <div class="card video-card">
+                        <a href="video-detail.html?video=${v.id}" style="text-decoration:none;color:inherit;">
+                            <img class="video-thumb card-img-top" src="${thumb}" alt="${v.name}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="video-detail.html?video=${v.id}" style="text-decoration:none;color:inherit;">${v.name}</a></h5>
+                            <div class="d-flex justify-content-between tm-text-gray">
+                                <span>${v.date}</span>
+                                <span>${v.views}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                videoGallery.appendChild(col);
+            }
+        }
+
+        updatePaging(page);
+    }
+
+    function updatePaging(page) {
+        const totalPages = Math.max(1, Math.ceil(filtered.length / videosPerPage));
+        totalPagesSpan.textContent = totalPages;
+        manualPage.value = page;
+        pagingLinks.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+            const a = document.createElement('a');
+            a.href = 'javascript:void(0);';
+            a.textContent = i;
+            a.className = 'tm-paging-link' + (i === page ? ' active' : '');
+            a.addEventListener('click', () => { currentPage = i; renderVideos(currentPage); });
+            pagingLinks.appendChild(a);
+        }
+
+        btnPrev.classList.toggle('disabled', page === 1);
+        btnNext.classList.toggle('disabled', page === totalPages);
+    }
+
+    btnPrev.addEventListener('click', () => {
+        if (currentPage > 1) currentPage--, renderVideos(currentPage);
+    });
+    btnNext.addEventListener('click', () => {
+        const totalPages = Math.max(1, Math.ceil(filtered.length / videosPerPage));
+        if (currentPage < totalPages) currentPage++, renderVideos(currentPage);
+    });
+
+    // Search
+    function handleSearch(e) {
+        if (e) e.preventDefault();
+        const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+        if (!q) filtered = [...videos];
+        else {
+            filtered = videos.filter(v =>
+                (v.name || '').toLowerCase().includes(q) ||
+                (v.date || '').toLowerCase().includes(q)
+            );
+        }
+        currentPage = 1;
+        renderVideos(currentPage);
+        return false;
+    }
+
+    // initial render
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => document.body.classList.add('loaded'), 200);
+        filtered = [...videos];
+        renderVideos(currentPage);
+    });
+    </script>
+</body>
+</html>

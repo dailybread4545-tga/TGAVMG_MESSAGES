@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TGAVMG_MESSAGES Video Detail Page</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="css/templatemo-style.css">
+  <link href="img/logo.png" rel="icon">
+
+  <style>
+    .tm-video-player {
+      background: #000;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    #player-frame {
+     width: 100% !important;
+     height: 640 !important;
+      border: 0;
+      display: block;
+    }
+    iframe {
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 6px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .progress .bar {
+      height: 100%;
+      width: 0%;
+      background: #007bff;
+      transition: width .15s linear;
+    }
+    .time {
+      min-width: 70px;
+      text-align: right;
+      font-size: .9rem;
+      color: #444;
+    }
+    .big-btn { padding: .45rem .6rem; font-size: 1rem; }
+
+    .tm-video-info {
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+
+
+    @media (max-width:768px){
+      .player-frame { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="videos.html" style="font-family: Ramabhadra;">
+        <img src="img/logo.png" class="logo" style="height:65px; width:65px;">
+        TGAVMG_MESSAGES
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link nav-link-2" href="videos.html"><i class="fas fa-film mr-2"></i>Videos</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-3" href="https://tgaversequote.vercel.app/about.html"><i class="fas fa-person mr-2"></i>About</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-4" href="https://tgavmg.vercel.app/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="img/hero.jpg" style="background-image:url('img/hero.jpg');">
+    <form class="d-flex tm-search-form" onsubmit="return false;">
+      <input class="form-control tm-search-input" id="searchInputTop" type="search" placeholder="Search meeting name or date" aria-label="Search">
+      <button class="btn btn-outline-success tm-search-btn" onclick="doTopSearch()"> <i class="fas fa-search"></i> </button>
+    </form>
+  </div>
+
+  <div class="container-fluid tm-container-content tm-mt-60">
+    <div class="row mb-4">
+      <h2 class="col-12 tm-text-primary" id="videoTitle">Video title</h2>
+    </div>
+    <div class="row tm-mb-90">
+      <div class="col-xl-8 col-lg-7 col-md-12 col-sm-12">
+        <div class="tm-video-player" id="playerContainer">
+          <div id="player"></div>
+        </div>
+
+        <div class="tm-video-info">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="controls">
+              <button id="btnPlay" class="btn  big-btn" title="Play/Pause">▶️</button>
+              <button id="btnRewind10" class="btn   big-btn" title="Rewind 10s">⏪</button>
+              <button id="btnForward10" class="btn   big-btn" title="Forward 10s">⏩</button>
+
+              <label style="display:flex;align-items:center;gap:8px;margin-left:8px;">
+                <i class="fas fa-volume-up"></i>
+                <input id="volumeSlider" type="range" min="0" max="100" value="100">
+              </label>
+            </div>
+
+            <div>
+              <button id="btnFullscreen" class="btn  big-btn" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="time" id="timeCurrent">00:00</div>
+            <div class="progress" id="seekBar">
+              <div class="bar" id="progressBar"></div>
+            </div>
+            <div class="time" id="timeTotal">00:00</div>
+          </div>
+            <div style="margin-left: 5rem;">
+              <button id="prevVideoBtn" class="btn big-btn">⏮Prev</button>
+              <button id="nextVideoBtn" class="btn big-btn">Next⏭</button>
+          </div>
+          <div id="playerStatus" style="margin-top:8px;color:#666;"></div>
+        </div>
+      </div>
+
+      <div class="col-xl-4 col-lg-5 col-md-12 col-sm-12">
+        <div class="tm-video-info">
+            <div class="mb-4">
+            <h6>Video details</h6>
+            <p class="tm-text-gray-dark">Date: <span id="videoDate" class="tm-text-primary">—</span></p>
+            <div class="mr-4 mb-2">
+                <span class="tm-text-gray-dark">Format: </span><span class="tm-text-primary">MP4</span>
+            </div>
+            <div class="mr-4 mb-2">
+                <span class="tm-text-gray-dark">Resolution: </span><span class="tm-text-primary">1920x1080</span>
+            </div>
+          </div>
+          <div class="text-center mb-5">
+            <button id="nextVideoBtn" class="btn btn-primary tm-btn-big"> <a href="videos.html" style="color: rgb(255, 255, 255);">Playlist ▶</a> </button>
+          </div> 
+          <p class="mb-4">
+            <strong>True Gospel Assembly Vemagiri (TGAVMG)</strong> is a Bible-based church dedicated to spreading the Word of God and nurturing spiritual growth through worship, fellowship, and service. 
+            We believe in the full Gospel message and seek to live out Christ’s teachings in our daily lives.
+          </p>
+                    <div class="text-center mb-5">
+            <button id="shareBtn" class="btn btn-primary tm-btn-big " title="Share this video">Share 📤</button>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+       <!-- Footer -->
+    <div class="tm-bg-gray pt-5 pb-3 tm-text-gray">
+        <div class="container-fluid tm-container-small">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4">True Gospel Assembly Vemagiri</h3>
+                    <p> (TGAVMG) is a Bible-based church dedicated to spreading the Word of God and nurturing spiritual growth through worship, fellowship, and service. We believe in the full Gospel message and seek to live out Christ’s teachings in our daily lives.</p>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4">Our Links</h3>
+                    <ul class="tm-footer-links pl-0">
+                        <li><a href="https://tgavmg.vercel.app/">Website</a></li>
+                        <li><a href="https://tgaversequote.vercel.app/index.html">Bible/Qoute</a></li>
+                        <li><a href="https://tgaversequote.vercel.app/about.html">About</a></li>
+                        <li><a href="https://tgavmg.vercel.app/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <ul class="tm-social-links d-flex justify-content-end pl-0 mb-5">
+                        <li class="mb-2"><a href="https://facebook.com"><i class="fab fa-facebook"></i></a></li>
+                        <li class="mb-2"><a href="https://twitter.com"><i class="fab fa-twitter"></i></a></li>
+                        <li class="mb-2"><a href="https://instagram.com"><i class="fab fa-instagram"></i></a></li>
+                        <li class="mb-2"><a href="https://pinterest.com"><i class="fab fa-pinterest"></i></a></li>
+                    </ul>
+                    <a href="#" class="tm-text-gray text-right d-block mb-2">Terms of Use</a>
+                    <a href="#" class="tm-text-gray text-right d-block">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
+                    ©2025 TRUE GOSPEL ASSEMBLY VEMAGIRI — All Rights Reserved.
+                </div>
+                <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
+                    Designed by <a href="#" class="tm-text-gray" rel="sponsored" target="_parent">Bannu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <script>
+    const videos = [
+    { id: 'ql19jsAG4XY', name: 'Saturday Meeting', date: '07 Sep 2024', views: '10,460 views' },
+    { id: 'zL5e6fFaME8', name: 'Saturday Meeting', date: '21 Sep 2024', views: '10,460 views' },
+    { id: 'nZfuy4Cg330', name: 'Saturday Meeting', date: '05 Oct 2024', views: '10,460 views' },
+    { id: '50MwE3Ek5uo', name: 'Saturday Meeting', date: '19 Oct 2024', views: '10,460 views' },
+    { id: 'ZRDSmpnp8PA', name: 'Saturday Meeting', date: '26 Oct 2024', views: '10,460 views' },
+    { id: 'og8uFRmFzcc', name: 'Saturday Meeting', date: '02 Nov 2024', views: '10,460 views'},
+    { id: 'BfqUggTX_5w', name: 'Saturday Meeting', date: '16 Nov 2024', views: '10,460 views'},
+    { id: 'SKnIY_FxVnQ', name: 'Saturday Meeting', date: '23 Nov 2024', views: '10,460 views'},
+    { id: 'Tf7o-ELOBs8', name: 'Saturday Meeting', date: '30 Nov 2024', views: '10,460 views'},
+    { id: '8VzjDGMCPgw', name: 'Saturday Meeting', date: '21 Dec 2024', views: '10,460 views'},
+    { id: 'Y46pCxayYCc', name: 'Saturday Meeting', date: '22 Mar 2025', views: '10,460 views'},
+    { id: '3AOlnEgTMsQ', name: 'Saturday Meeting', date: '05 Apr 2025', views: '10,460 views' },
+    { id: 'uJR0DZn7Efg', name: 'Saturday Meeting', date: '26 Apr 2025', views: '10,460 views'},
+    { id: 'enVGils5Yt4', name: 'Saturday Meeting', date: '24 May 2025', views: '10,460 views'},
+    { id: 'E2mDSOzl00Q', name: 'Saturday Meeting', date: '31 May 2025', views: '10,460 views'},
+    { id: 'WRHmz30XfPI', name: 'Saturday Meeting', date: '07 Jun 2025', views: '10,460 views'},
+    { id: '26Ga0cukl0I', name: 'Saturday Meeting', date: '21 Jun 2025', views: '10,460 views'},
+    { id: 'SMDv6mvO7fU', name: 'Saturday Meeting', date: '28 Jun 2025', views: '10,460 views'},
+    { id: 'WVFH-WliLxw', name: 'Saturday Meeting', date: '05 Jul 2025', views: '10,460 views'}
+    ];
+
+    function getParam(name) {
+      const u = new URL(window.location.href);
+      return u.searchParams.get(name);
+    }
+
+    function indexOfId(id) {
+      return videos.findIndex(v => v.id === id);
+    }
+
+    const titleEl = document.getElementById('videoTitle');
+    const videoDate = document.getElementById('videoDate');
+    const videoViews = document.getElementById('videoViews');
+    const playerStatus = document.getElementById('playerStatus');
+    const btnPlay = document.getElementById('btnPlay');
+    const btnRewind10 = document.getElementById('btnRewind10');
+    const btnForward10 = document.getElementById('btnForward10');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const timeCurrent = document.getElementById('timeCurrent');
+    const timeTotal = document.getElementById('timeTotal');
+    const progressBar = document.getElementById('progressBar');
+    const seekBar = document.getElementById('seekBar');
+    const prevVideoBtn = document.getElementById('prevVideoBtn');
+    const nextVideoBtn = document.getElementById('nextVideoBtn');
+
+    let currentIndex = 0;
+
+    const videoIdParam = getParam('video');
+    if (videoIdParam) {
+      const idx = indexOfId(videoIdParam);
+      currentIndex = idx >= 0 ? idx : 0;
+    }
+
+    function refreshMeta() {
+      const v = videos[currentIndex];
+      titleEl.textContent = v.name;
+      videoDate.textContent = v.date;
+      videoViews.textContent = v.views;
+      prevVideoBtn.classList.toggle('disabled', currentIndex === 0);
+      nextVideoBtn.classList.toggle('disabled', currentIndex === videos.length - 1);
+    }
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '640',
+        width: '100%',
+        videoId: videos[currentIndex].id,
+        playerVars: { autoplay: 1, rel: 0, modestbranding: 1, controls: 0 },
+        events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange }
+      });
+    }
+
+    function onPlayerReady(e) {
+      e.target.setVolume(100);
+      updatePlayButton();
+      startProgress();
+      playerStatus.textContent = '✅ Ready';
+    }
+
+    function onPlayerStateChange(e) {
+      const s = e.data;
+      updatePlayButton();
+      if (s === YT.PlayerState.ENDED) {
+        if (currentIndex < videos.length - 1) {
+          currentIndex++;
+          playCurrent();
+        }
+      }
+    }
+
+    btnPlay.addEventListener('click', () => {
+      const state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+      else player.playVideo();
+      updatePlayButton();
+    });
+
+    function updatePlayButton() {
+      if (!player || typeof player.getPlayerState !== 'function') return;
+      const s = player.getPlayerState();
+      btnPlay.textContent = s === YT.PlayerState.PLAYING ? '⏸' : '▶️';
+    }
+
+    btnRewind10.addEventListener('click', () => {
+      const t = Math.max(0, player.getCurrentTime() - 10);
+      player.seekTo(t, true);
+    });
+    btnForward10.addEventListener('click', () => {
+      const t = Math.min(player.getDuration(), player.getCurrentTime() + 10);
+      player.seekTo(t, true);
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      player.setVolume(parseInt(e.target.value, 10));
+    });
+
+    let progressInterval = null;
+    function startProgress() {
+      clearInterval(progressInterval);
+      progressInterval = setInterval(() => {
+        const dur = player.getDuration();
+        const cur = player.getCurrentTime();
+        const pct = (cur / dur) * 100;
+        progressBar.style.width = pct + '%';
+        timeCurrent.textContent = formatTime(cur);
+        timeTotal.textContent = formatTime(dur);
+      }, 300);
+    }
+
+    function formatTime(sec) {
+      sec = Math.floor(sec);
+      const mm = Math.floor(sec / 60);
+      const ss = sec % 60;
+      return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+    }
+
+    seekBar.addEventListener('click', (ev) => {
+      const r = seekBar.getBoundingClientRect();
+      const pct = (ev.clientX - r.left) / r.width;
+      player.seekTo(player.getDuration() * pct, true);
+    });
+
+    prevVideoBtn.addEventListener('click', () => {
+      if (currentIndex > 0) { currentIndex--; playCurrent(); }
+    });
+    nextVideoBtn.addEventListener('click', () => {
+      if (currentIndex < videos.length - 1) { currentIndex++; playCurrent(); }
+    });
+
+    function playCurrent() {
+      refreshMeta();
+      const id = videos[currentIndex].id;
+      player.loadVideoById(id);
+      const url = new URL(window.location.href);
+      url.searchParams.set('video', id);
+      history.replaceState({}, '', url.toString());
+      playerStatus.textContent = '🌀 Loading...';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => document.body.classList.add('loaded'), 200);
+      refreshMeta();
+    });
+
+    window.addEventListener('blur', () => {
+      document.getElementById('player').style.filter = 'blur(10px)';
+    });
+    window.addEventListener('focus', () => {
+      document.getElementById('player').style.filter = 'none';
+    });
+
+    function doTopSearch(){
+      const q = (document.getElementById('searchInputTop').value || '').trim().toLowerCase();
+      if (!q) { window.location.href = 'videos.html'; return; }
+      const found = videos.find(v => v.name.toLowerCase().includes(q) || v.date.toLowerCase().includes(q));
+      if (found) window.location.href = `video-detail.html?video=${found.id}`;
+      else alert('Meeting not found.');
+    }
+
+    // --- Fullscreen toggle ---
+const btnFullscreen = document.getElementById('btnFullscreen');
+
+btnFullscreen.addEventListener('click', () => {
+  const playerContainer = document.getElementById('playerContainer');
+  if (!document.fullscreenElement) {
+    if (playerContainer.requestFullscreen) playerContainer.requestFullscreen();
+    else if (playerContainer.webkitRequestFullscreen) playerContainer.webkitRequestFullscreen();
+    else if (playerContainer.msRequestFullscreen) playerContainer.msRequestFullscreen();
+    btnFullscreen.textContent = '🗗'; // change icon to "exit" style
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    else if (document.msExitFullscreen) document.msExitFullscreen();
+    btnFullscreen.textContent = '⛶'; // back to normal
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) btnFullscreen.textContent = '⛶';
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const videoId = params.get('video');
+
+  // 🧠 Detect device
+  const ua = navigator.userAgent.toLowerCase();
+  let appLink = '';
+
+  if (/android/.test(ua)) {
+    appLink = 'https://play.google.com/store/apps/details?id=com.tgavmg.app'; // 🔗 Replace with your Play Store link
+  } else if (/iphone|ipad|ipod/.test(ua)) {
+    appLink = 'https://apps.apple.com/app/id1234567890'; // 🔗 Replace with your App Store link
+  } else {
+    appLink = 'https://tgavmg.vercel.app'; // 💻 Website fallback
+  }
+
+  const shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', async () => {
+    const videoUrl = `${window.location.origin}/video-detail.html?video=${videoId}`;
+    const fullMessage = `📺 Watch this TGAVMG video:\n${videoUrl}\n\n📱 Get our app here:\n${appLink}`;
+
+    try {
+      if (navigator.share) {
+        // ✅ Mobile native share
+        await navigator.share({
+          title: 'TGAVMG - Saturday Message',
+          text: fullMessage,
+          url: videoUrl,
+        });
+      } else {
+        // 💻 Desktop fallback: copy to clipboard
+        await navigator.clipboard.writeText(fullMessage);
+        alert('✅ Video + App link copied to clipboard!');
+      }
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  });
+});
+
+
+
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+  </script>
+</body>
+</html>
